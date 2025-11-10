@@ -150,22 +150,22 @@
 - [x] **✅ Verify: Commands are pure, no side effects** (16/16 tests passing)
 
 ### Step 9: Effect Executor (Side Effects)
-- [ ] Create `backend/effect_executor.py`
-- [ ] Implement `EffectExecutor` class
-- [ ] Add `claude_clients` dict instance variable
-- [ ] Implement `async execute(effects)` method
-- [ ] Implement `async _execute_one(effect)` method
-- [ ] Implement `_create_claude_client(data)` (mock for now)
-- [ ] Implement `_execute_agent_command(data)` (mock)
-- [ ] Implement `_execute_orchestrator(data)` (mock)
-- [ ] Add error handling (append `EFFECT_EXECUTION_FAILED`)
-- [ ] Create `tests/test_effect_executor.py`
-- [ ] Write test: execute create_claude_client
-- [ ] Write test: execute agent_command
-- [ ] Write test: execute orchestrator
-- [ ] Write test: effect execution error
-- [ ] Write test: multiple effects in sequence
-- [ ] **✅ Verify: Effects execute, events logged**
+- [x] Create `backend/effect_executor.py`
+- [x] Implement `EffectExecutor` class
+- [x] Add `claude_clients` dict instance variable
+- [x] Implement `async execute(effects)` method
+- [x] Implement `async _execute_one(effect)` method
+- [x] Implement `_create_claude_client(data)` (mock for now)
+- [x] Implement `_execute_agent_command(data)` (mock)
+- [x] Implement `_execute_orchestrator(data)` (mock)
+- [x] Add error handling (append `EFFECT_EXECUTION_FAILED`)
+- [x] Create `tests/test_effect_executor.py`
+- [x] Write test: execute create_claude_client
+- [x] Write test: execute agent_command
+- [x] Write test: execute orchestrator
+- [x] Write test: effect execution error
+- [x] Write test: multiple effects in sequence
+- [x] **✅ Verify: Effects execute, events logged** (13/13 tests passing)
 
 ### Step 10: Claude SDK Integration
 - [ ] Update `effect_executor.py` to import Claude SDK
