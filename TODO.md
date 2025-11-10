@@ -187,29 +187,29 @@
 ## 📋 Phase 4: HTTP API Layer
 
 ### Step 11: Basic FastAPI Server with State Endpoints
-- [ ] Create `backend/main.py` with FastAPI app
-- [ ] Add CORS middleware
-- [ ] Implement lifespan context manager
-- [ ] Initialize `event_store` in lifespan
-- [ ] Initialize `snapshot_manager` in lifespan
-- [ ] Initialize `state_manager` in lifespan
-- [ ] Store in `app.state`
-- [ ] Add `GET /health` endpoint
-- [ ] Add `GET /state` endpoint
-- [ ] Add `GET /agents` endpoint
-- [ ] Add `GET /agents/{name}` endpoint (with 404 handling)
-- [ ] Add `GET /chat?limit=N` endpoint
-- [ ] Add `GET /cost` endpoint
-- [ ] Create `tests/test_api_basic.py`
-- [ ] Create test fixture with TestClient
-- [ ] Write test: health endpoint
-- [ ] Write test: get state
-- [ ] Write test: get agents
-- [ ] Write test: get agent by name
-- [ ] Write test: get agent not found (404)
-- [ ] Write test: get chat history
-- [ ] Write test: get cost summary
-- [ ] **✅ Verify: All API endpoints work**
+- [x] Create `backend/main.py` with FastAPI app
+- [x] Add CORS middleware
+- [x] Implement lifespan context manager
+- [x] Initialize `event_store` in lifespan
+- [x] Initialize `snapshot_manager` in lifespan
+- [x] Initialize `state_manager` in lifespan
+- [x] Store in `app.state`
+- [x] Add `GET /health` endpoint
+- [x] Add `GET /state` endpoint
+- [x] Add `GET /agents` endpoint
+- [x] Add `GET /agents/{name}` endpoint (with 404 handling)
+- [x] Add `GET /chat?limit=N` endpoint
+- [x] Add `GET /cost` endpoint
+- [x] Create `tests/test_api_basic.py`
+- [x] Create test fixture with TestClient
+- [x] Write test: health endpoint
+- [x] Write test: get state
+- [x] Write test: get agents
+- [x] Write test: get agent by name
+- [x] Write test: get agent not found (404)
+- [x] Write test: get chat history
+- [x] Write test: get cost summary
+- [x] **✅ Verify: All API endpoints work** (17/17 tests passing, 150/153 total)
 
 ### Step 12: SSE Endpoint for Event Streaming
 - [ ] Add `GET /events?since=N` endpoint to `main.py`
