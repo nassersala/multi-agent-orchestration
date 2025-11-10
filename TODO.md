@@ -132,22 +132,22 @@
 ## 📋 Phase 3: Command & Effect System
 
 ### Step 8: Command Handler (Pure Functions)
-- [ ] Create `backend/effects.py` with `Effect` dataclass
-- [ ] Create `backend/command_handler.py`
-- [ ] Implement `CommandHandler` class
-- [ ] Implement `handle_create_agent(name, system_prompt, model, template)`
-- [ ] Implement `handle_command_agent(agent_name, command)`
-- [ ] Implement `handle_user_message(message)`
-- [ ] Add validation logic (agent exists, no duplicates)
-- [ ] Return `tuple[list[int], list[Effect]]` from all handlers
-- [ ] Create `tests/test_command_handler.py`
-- [ ] Write test: handle_create_agent success
-- [ ] Write test: handle_create_agent duplicate name error
-- [ ] Write test: handle_command_agent success
-- [ ] Write test: handle_command_agent nonexistent error
-- [ ] Write test: handle_user_message
-- [ ] Write test: events persisted in store
-- [ ] **✅ Verify: Commands are pure, no side effects**
+- [x] Create `backend/effects.py` with `Effect` dataclass
+- [x] Create `backend/command_handler.py`
+- [x] Implement `CommandHandler` class
+- [x] Implement `handle_create_agent(name, system_prompt, model, template)`
+- [x] Implement `handle_command_agent(agent_name, command)`
+- [x] Implement `handle_user_message(message)`
+- [x] Add validation logic (agent exists, no duplicates)
+- [x] Return `tuple[list[int], list[Effect]]` from all handlers
+- [x] Create `tests/test_command_handler.py`
+- [x] Write test: handle_create_agent success
+- [x] Write test: handle_create_agent duplicate name error
+- [x] Write test: handle_command_agent success
+- [x] Write test: handle_command_agent nonexistent error
+- [x] Write test: handle_user_message
+- [x] Write test: events persisted in store
+- [x] **✅ Verify: Commands are pure, no side effects** (16/16 tests passing)
 
 ### Step 9: Effect Executor (Side Effects)
 - [ ] Create `backend/effect_executor.py`
