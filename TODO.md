@@ -112,20 +112,20 @@
 - [x] **✅ Verify: State manager works correctly** (23/23 tests passing)
 
 ### Step 7: Snapshot System
-- [ ] Create `backend/snapshot_manager.py`
-- [ ] Implement `SnapshotManager` class
-- [ ] Implement `should_snapshot(event_id)` method
-- [ ] Implement `save_snapshot(state, event_id)` method
-- [ ] Implement `load_latest_snapshot()` method
-- [ ] Update `StateManager.__init__` to accept `SnapshotManager`
-- [ ] Update `_rebuild_state()` to use snapshots
-- [ ] Add `maybe_snapshot()` method
-- [ ] Create `tests/test_snapshots.py`
-- [ ] Write test: save and load snapshot
-- [ ] Write test: load latest returns newest
-- [ ] Write test: load latest returns None when empty
-- [ ] Write test: state manager uses snapshot
-- [ ] **✅ Verify: Snapshot system works, fast recovery**
+- [x] Create `backend/snapshot_manager.py`
+- [x] Implement `SnapshotManager` class
+- [x] Implement `should_snapshot(event_id)` method
+- [x] Implement `save_snapshot(state, event_id)` method
+- [x] Implement `load_latest_snapshot()` method
+- [x] Update `StateManager.__init__` to accept `SnapshotManager`
+- [x] Update `_rebuild_state()` to use snapshots
+- [x] Add `maybe_snapshot()` method
+- [x] Create `tests/test_snapshots.py`
+- [x] Write test: save and load snapshot
+- [x] Write test: load latest returns newest
+- [x] Write test: load latest returns None when empty
+- [x] Write test: state manager uses snapshot
+- [x] **✅ Verify: Snapshot system works, fast recovery** (18/18 tests passing)
 
 ---
 
