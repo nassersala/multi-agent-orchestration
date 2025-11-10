@@ -9,8 +9,11 @@ from contextlib import asynccontextmanager
 from typing import Optional, Dict, Any, List
 from pathlib import Path
 from datetime import datetime
+import asyncio
+import json
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -281,6 +284,142 @@ async def get_cost():
         total_input_tokens=state.total_input_tokens,
         total_output_tokens=state.total_output_tokens,
         event_count=len(all_events)
+    )
+
+
+# SSE Event Streaming endpoint
+@app.get("/events")
+async def stream_events(request: Request, since: int = Query(default=0, ge=0)):
+    """
+    Server-Sent Events (SSE) endpoint for real-time event streaming.
+
+    Args:
+        request: FastAPI request object (used to detect client disconnect)
+        since: Event ID to start streaming from (0 = send all events)
+
+    Returns:
+        StreamingResponse with text/event-stream content type
+
+    SSE Format:
+        data: {"event": {...}, "id": 123}\\n\\n
+
+    The client should:
+        1. Connect to /events?since=0 initially
+        2. Process events and track the last event ID
+        3. Reconnect with /events?since=<last_id> if disconnected
+    """
+    async def event_stream():
+        """
+        Async generator that yields SSE-formatted events.
+
+        Flow:
+            1. Send initial STATE_SNAPSHOT with current state
+            2. Stream new events as they arrive
+            3. Send keepalive comments every 30s if no events
+            4. Detect client disconnect and exit cleanly
+        """
+        last_event_id = since
+        keepalive_interval = 30.0  # seconds
+        poll_interval = 0.5  # seconds
+        last_keepalive = asyncio.get_event_loop().time()
+
+        try:
+            # Send initial state snapshot
+            app.state.state_manager.sync()
+            state = app.state.state_manager.get_state()
+
+            snapshot_data = {
+                "type": "STATE_SNAPSHOT",
+                "data": {
+                    "orchestrator_id": state.orchestrator_id,
+                    "total_cost": state.total_cost,
+                    "total_input_tokens": state.total_input_tokens,
+                    "total_output_tokens": state.total_output_tokens,
+                    "agents": {
+                        name: {
+                            "name": agent.name,
+                            "model": agent.model,
+                            "system_prompt": agent.system_prompt,
+                            "status": agent.status,
+                            "session_id": agent.session_id,
+                            "working_dir": agent.working_dir,
+                            "input_tokens": agent.input_tokens,
+                            "output_tokens": agent.output_tokens,
+                            "total_cost": agent.total_cost,
+                        }
+                        for name, agent in state.agents.items()
+                    },
+                    "chat_history": [
+                        {
+                            "sender": msg.sender,
+                            "receiver": msg.receiver,
+                            "message": msg.message,
+                            "timestamp": msg.timestamp.isoformat() if isinstance(msg.timestamp, datetime) else msg.timestamp,
+                            "agent_name": msg.agent_name,
+                        }
+                        for msg in state.chat_history
+                    ],
+                },
+                "timestamp": datetime.utcnow().isoformat(),
+            }
+
+            yield f"data: {json.dumps(snapshot_data)}\n\n"
+
+            # Stream new events in a loop
+            while True:
+                # Check if client disconnected
+                if await request.is_disconnected():
+                    break
+
+                # Get new events since last_event_id
+                new_events = app.state.event_store.since(last_event_id, limit=100)
+
+                if new_events:
+                    for event in new_events:
+                        # Format event for SSE
+                        event_data = {
+                            "id": event["id"],
+                            "type": event["type"],
+                            "aggregate_id": event["aggregate_id"],
+                            "aggregate_type": event["aggregate_type"],
+                            "data": event["data"],
+                            "metadata": event["metadata"],
+                            "timestamp": event["timestamp"],
+                        }
+
+                        yield f"data: {json.dumps(event_data)}\n\n"
+                        last_event_id = event["id"]
+                        last_keepalive = asyncio.get_event_loop().time()
+                else:
+                    # No new events, send keepalive if needed
+                    current_time = asyncio.get_event_loop().time()
+                    if current_time - last_keepalive > keepalive_interval:
+                        yield ": keepalive\n\n"
+                        last_keepalive = current_time
+
+                # Wait before polling again
+                await asyncio.sleep(poll_interval)
+
+        except asyncio.CancelledError:
+            # Client disconnected gracefully
+            pass
+        except Exception as e:
+            # Log error and send error event
+            error_data = {
+                "type": "ERROR",
+                "data": {"message": str(e)},
+                "timestamp": datetime.utcnow().isoformat(),
+            }
+            yield f"data: {json.dumps(error_data)}\n\n"
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",  # Disable nginx buffering
+        }
     )
 
 
