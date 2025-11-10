@@ -212,19 +212,19 @@
 - [x] **✅ Verify: All API endpoints work** (17/17 tests passing, 150/153 total)
 
 ### Step 12: SSE Endpoint for Event Streaming
-- [ ] Add `GET /events?since=N` endpoint to `main.py`
-- [ ] Implement async generator `event_stream(request, since)`
-- [ ] Send initial `STATE_SNAPSHOT` event
-- [ ] Loop: check disconnect, get new events, yield SSE format
-- [ ] Send keepalive messages when no events
-- [ ] Add proper SSE headers (Cache-Control, Connection, etc.)
-- [ ] Create `tests/test_sse.py`
-- [ ] Write test: SSE connection
-- [ ] Write test: initial snapshot sent
-- [ ] Write test: events streamed
-- [ ] Write test: since parameter works
-- [ ] Write test: keepalive messages
-- [ ] **✅ Verify: SSE streaming works, reconnects handled**
+- [x] Add `GET /events?since=N` endpoint to `main.py`
+- [x] Implement async generator `event_stream(request, since)`
+- [x] Send initial `STATE_SNAPSHOT` event
+- [x] Loop: check disconnect, get new events, yield SSE format
+- [x] Send keepalive messages when no events
+- [x] Add proper SSE headers (Cache-Control, Connection, etc.)
+- [x] Create `tests/test_sse.py`
+- [x] Write test: SSE connection
+- [x] Write test: initial snapshot sent
+- [x] Write test: events streamed
+- [x] Write test: since parameter works
+- [x] Write test: keepalive messages
+- [x] **✅ Verify: SSE streaming works, reconnects handled** (6/6 tests passing, 23/23 total with Step 11)
 
 ### Step 13: Command Endpoints
 - [ ] Initialize `command_handler` in lifespan
