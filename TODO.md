@@ -52,21 +52,21 @@
 ## 📋 Phase 2: State Management (Pure Functions)
 
 ### Step 4: Event Type Definitions & Base State Model
-- [ ] Create `backend/event_types.py` with event constants
-- [ ] Define `ORCHESTRATOR_INITIALIZED` constant
-- [ ] Define `AGENT_CREATED` constant
-- [ ] Define `AGENT_COMMANDED` constant
-- [ ] Define `COST_INCURRED` constant
-- [ ] Define all other event type constants (15+ total)
-- [ ] Create `backend/models.py`
-- [ ] Define `Agent` dataclass (frozen=True)
-- [ ] Define `ChatMessage` dataclass (frozen=True)
-- [ ] Define `OrchestratorState` dataclass (frozen=True)
-- [ ] Create `tests/test_models.py`
-- [ ] Write test: dataclasses are immutable
-- [ ] Write test: default values work
-- [ ] Write test: can create with all fields
-- [ ] **✅ Verify: Models are immutable and well-typed**
+- [x] Create `backend/event_types.py` with event constants
+- [x] Define `ORCHESTRATOR_INITIALIZED` constant
+- [x] Define `AGENT_CREATED` constant
+- [x] Define `AGENT_COMMANDED` constant
+- [x] Define `COST_INCURRED` constant
+- [x] Define all other event type constants (15+ total)
+- [x] Create `backend/models.py`
+- [x] Define `Agent` dataclass (frozen=True)
+- [x] Define `ChatMessage` dataclass (frozen=True)
+- [x] Define `OrchestratorState` dataclass (frozen=True)
+- [x] Create `tests/test_models.py`
+- [x] Write test: dataclasses are immutable
+- [x] Write test: default values work
+- [x] Write test: can create with all fields
+- [x] **✅ Verify: Models are immutable and well-typed** (19/19 tests passing)
 
 ### Step 5: State Projection Functions
 - [ ] Create `backend/projections.py`
