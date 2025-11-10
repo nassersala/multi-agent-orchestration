@@ -33,8 +33,8 @@ def event_store():
 
 @pytest.fixture
 def effect_executor(event_store):
-    """Create effect executor with in-memory store."""
-    return EffectExecutor(event_store)
+    """Create effect executor with in-memory store in mock mode."""
+    return EffectExecutor(event_store, use_mock=True)
 
 
 # ═══════════════════════════════════════════════════════════
