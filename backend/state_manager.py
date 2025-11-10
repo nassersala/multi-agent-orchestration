@@ -6,11 +6,14 @@ It supports efficient incremental updates and full rebuilds.
 """
 
 import threading
-from typing import Optional, Dict, List
+from typing import Optional, Dict, List, TYPE_CHECKING
 
 from backend.event_store import EventStore
 from backend.models import OrchestratorState, Agent, ChatMessage
 from backend.projections import apply_event, rebuild_state
+
+if TYPE_CHECKING:
+    from backend.snapshot_manager import SnapshotManager
 
 
 class StateManager:
@@ -37,24 +40,34 @@ class StateManager:
         {'alice': Agent(...)}
     """
 
-    def __init__(self, event_store: EventStore):
+    def __init__(
+        self,
+        event_store: EventStore,
+        snapshot_manager: Optional['SnapshotManager'] = None
+    ):
         """
         Initialize state manager.
 
         Args:
             event_store: EventStore instance to read events from
+            snapshot_manager: Optional SnapshotManager for fast recovery
         """
         self._event_store = event_store
+        self._snapshot_manager = snapshot_manager
         self._state = OrchestratorState()
         self._last_event_id = 0
         self._lock = threading.RLock()
 
-        # Perform initial rebuild from all existing events
+        # Perform initial rebuild from all existing events (or snapshot)
         self._rebuild_state()
 
     def _rebuild_state(self) -> None:
         """
         Rebuild complete state from all events in store.
+
+        If snapshot_manager is configured, this will load the latest snapshot
+        and only replay events since that snapshot, significantly improving
+        performance for large event logs.
 
         This is called during initialization and can be called manually
         to reset state to match the event log.
@@ -63,14 +76,36 @@ class StateManager:
             This method is private and should only be called when lock is held
             or during initialization.
         """
-        events = self._event_store.get_all()
-        self._state = rebuild_state(events)
+        # Try to load from snapshot first
+        if self._snapshot_manager:
+            snapshot_result = self._snapshot_manager.load_latest_snapshot()
+            if snapshot_result:
+                self._state, self._last_event_id = snapshot_result
+                # Only replay events since snapshot
+                events = self._event_store.since(self._last_event_id)
+                for event in events:
+                    self._state = apply_event(self._state, event)
+                    self._last_event_id = event['id']
+                    self.maybe_snapshot()
+                return
 
-        # Update last_event_id to latest event
-        if events:
-            self._last_event_id = events[-1]['id']
+        # No snapshot available - rebuild from all events
+        events = self._event_store.get_all()
+
+        # If we have snapshot manager, apply events one by one to create snapshots
+        if self._snapshot_manager and events:
+            self._state = OrchestratorState()
+            for event in events:
+                self._state = apply_event(self._state, event)
+                self._last_event_id = event['id']
+                self.maybe_snapshot()
         else:
-            self._last_event_id = 0
+            # No snapshot manager - use fast rebuild
+            self._state = rebuild_state(events)
+            if events:
+                self._last_event_id = events[-1]['id']
+            else:
+                self._last_event_id = 0
 
     def sync(self) -> int:
         """
@@ -93,7 +128,34 @@ class StateManager:
                 self._state = apply_event(self._state, event)
                 self._last_event_id = event['id']
 
+                # Optionally create snapshot after applying event
+                self.maybe_snapshot()
+
             return len(new_events)
+
+    def maybe_snapshot(self) -> bool:
+        """
+        Check if snapshot should be taken and save it if needed.
+
+        This is automatically called during sync() if snapshot_manager is configured.
+        It can also be called manually to force snapshot evaluation.
+
+        Returns:
+            True if snapshot was taken, False otherwise
+
+        Example:
+            >>> manager.sync()
+            >>> manager.maybe_snapshot()  # Usually called automatically
+            True
+        """
+        if not self._snapshot_manager:
+            return False
+
+        if self._snapshot_manager.should_snapshot(self._last_event_id):
+            self._snapshot_manager.save_snapshot(self._state, self._last_event_id)
+            return True
+
+        return False
 
     def get_state(self) -> OrchestratorState:
         """
