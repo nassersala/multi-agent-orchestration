@@ -39,11 +39,11 @@
 - [x] Create index on `(aggregate_id, aggregate_type)`
 - [x] Create index on `type`
 - [x] Create index on `timestamp DESC`
-- [ ] Create `tests/test_event_store_performance.py`
-- [ ] Write test: append performance <1ms
-- [ ] Write test: query performance <10ms for 1000 events
-- [ ] Write test: since performance <10ms
-- [ ] **✅ Verify: Performance targets met**
+- [x] Create `tests/test_event_store_performance.py`
+- [x] Write test: append performance <1ms
+- [x] Write test: query performance <10ms for 1000 events
+- [x] Write test: since performance <10ms
+- [x] **✅ Verify: Performance targets met** (25/25 tests passing, all targets exceeded)
 
 **Note**: Steps 1-2 and indexes from Step 3 completed together. Thread-safety tests included.
 
