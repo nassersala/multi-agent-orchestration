@@ -69,24 +69,24 @@
 - [x] **✅ Verify: Models are immutable and well-typed** (19/19 tests passing)
 
 ### Step 5: State Projection Functions
-- [ ] Create `backend/projections.py`
-- [ ] Implement `apply_event(state, event)` function
-- [ ] Handle `ORCHESTRATOR_INITIALIZED` event
-- [ ] Handle `AGENT_CREATED` event
-- [ ] Handle `AGENT_STATUS_CHANGED` event
-- [ ] Handle `COST_INCURRED` event
-- [ ] Handle `USER_MESSAGE_RECEIVED` event
-- [ ] Handle `ORCHESTRATOR_RESPONSE_GENERATED` event
-- [ ] Handle `AGENT_DELETED` event
-- [ ] Handle unknown event types (return unchanged)
-- [ ] Implement `rebuild_state(events)` function
-- [ ] Create `tests/test_projections.py`
-- [ ] Write test for each event type (8+ tests)
-- [ ] Write test: unknown event returns unchanged state
-- [ ] Write test: rebuild from empty list
-- [ ] Write test: rebuild from sequence
-- [ ] Write test: original state unchanged (immutability)
-- [ ] **✅ Verify: All projection tests pass**
+- [x] Create `backend/projections.py`
+- [x] Implement `apply_event(state, event)` function
+- [x] Handle `ORCHESTRATOR_INITIALIZED` event
+- [x] Handle `AGENT_CREATED` event
+- [x] Handle `AGENT_STATUS_CHANGED` event
+- [x] Handle `COST_INCURRED` event
+- [x] Handle `USER_MESSAGE_RECEIVED` event
+- [x] Handle `ORCHESTRATOR_RESPONSE_GENERATED` event
+- [x] Handle `AGENT_DELETED` event
+- [x] Handle unknown event types (return unchanged)
+- [x] Implement `rebuild_state(events)` function
+- [x] Create `tests/test_projections.py`
+- [x] Write test for each event type (8+ tests)
+- [x] Write test: unknown event returns unchanged state
+- [x] Write test: rebuild from empty list
+- [x] Write test: rebuild from sequence
+- [x] Write test: original state unchanged (immutability)
+- [x] **✅ Verify: All projection tests pass** (22/22 tests passing)
 
 ### Step 6: State Manager with Rebuild
 - [ ] Create `backend/state_manager.py`
