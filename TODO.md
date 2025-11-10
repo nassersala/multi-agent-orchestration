@@ -89,43 +89,43 @@
 - [x] **✅ Verify: All projection tests pass** (22/22 tests passing)
 
 ### Step 6: State Manager with Rebuild
-- [ ] Create `backend/state_manager.py`
-- [ ] Implement `StateManager` class with `EventStore` dependency
-- [ ] Add `_state` instance variable
-- [ ] Add `_last_event_id` instance variable
-- [ ] Add `threading.RLock` for thread safety
-- [ ] Implement `_rebuild_state()` method
-- [ ] Implement `_sync()` method
-- [ ] Implement `get_state()` method
-- [ ] Implement `get_agents()` method
-- [ ] Implement `get_agent(name)` method
-- [ ] Implement `get_chat_history(limit)` method
-- [ ] Create `tests/test_state_manager.py`
-- [ ] Write test: rebuild from empty store
-- [ ] Write test: rebuild from events
-- [ ] Write test: get_state returns current
-- [ ] Write test: sync applies new events
-- [ ] Write test: get_agents returns dict
-- [ ] Write test: get_agent by name
-- [ ] Write test: get_chat_history with limit
-- [ ] Write test: thread safety
-- [ ] **✅ Verify: State manager works correctly**
+- [x] Create `backend/state_manager.py`
+- [x] Implement `StateManager` class with `EventStore` dependency
+- [x] Add `_state` instance variable
+- [x] Add `_last_event_id` instance variable
+- [x] Add `threading.RLock` for thread safety
+- [x] Implement `_rebuild_state()` method
+- [x] Implement `_sync()` method
+- [x] Implement `get_state()` method
+- [x] Implement `get_agents()` method
+- [x] Implement `get_agent(name)` method
+- [x] Implement `get_chat_history(limit)` method
+- [x] Create `tests/test_state_manager.py`
+- [x] Write test: rebuild from empty store
+- [x] Write test: rebuild from events
+- [x] Write test: get_state returns current
+- [x] Write test: sync applies new events
+- [x] Write test: get_agents returns dict
+- [x] Write test: get_agent by name
+- [x] Write test: get_chat_history with limit
+- [x] Write test: thread safety
+- [x] **✅ Verify: State manager works correctly** (23/23 tests passing)
 
 ### Step 7: Snapshot System
-- [ ] Create `backend/snapshot_manager.py`
-- [ ] Implement `SnapshotManager` class
-- [ ] Implement `should_snapshot(event_id)` method
-- [ ] Implement `save_snapshot(state, event_id)` method
-- [ ] Implement `load_latest_snapshot()` method
-- [ ] Update `StateManager.__init__` to accept `SnapshotManager`
-- [ ] Update `_rebuild_state()` to use snapshots
-- [ ] Add `maybe_snapshot()` method
-- [ ] Create `tests/test_snapshots.py`
-- [ ] Write test: save and load snapshot
-- [ ] Write test: load latest returns newest
-- [ ] Write test: load latest returns None when empty
-- [ ] Write test: state manager uses snapshot
-- [ ] **✅ Verify: Snapshot system works, fast recovery**
+- [x] Create `backend/snapshot_manager.py`
+- [x] Implement `SnapshotManager` class
+- [x] Implement `should_snapshot(event_id)` method
+- [x] Implement `save_snapshot(state, event_id)` method
+- [x] Implement `load_latest_snapshot()` method
+- [x] Update `StateManager.__init__` to accept `SnapshotManager`
+- [x] Update `_rebuild_state()` to use snapshots
+- [x] Add `maybe_snapshot()` method
+- [x] Create `tests/test_snapshots.py`
+- [x] Write test: save and load snapshot
+- [x] Write test: load latest returns newest
+- [x] Write test: load latest returns None when empty
+- [x] Write test: state manager uses snapshot
+- [x] **✅ Verify: Snapshot system works, fast recovery** (18/18 tests passing)
 
 ---
 
